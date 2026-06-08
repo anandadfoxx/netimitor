@@ -71,7 +71,9 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Credits
 
-This project is inspired by [https://github.com/lwthiker/curl-impersonate](https://github.com/lwthiker/curl-impersonate). Special thanks to the author for the concept of browser impersonation via HTTP client.
+- This project is inspired by [curl-impersonate](https://github.com/lwthiker/curl-impersonate). Special thanks to the author for the concept of browser impersonation via HTTP client.
+
+- The core HTTP client functionality is powered by [wreq](https://github.com/0x676e67/wreq) and [wreq-util](https://github.com/0x676e67/wreq-util), which provide TLS and HTTP/2 fingerprint emulation for browser impersonation.
 
 ## Disclaimer
 This project is assisted by LLM, with the list of models used are defined below:
