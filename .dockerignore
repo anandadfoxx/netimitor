@@ -1,0 +1,10 @@
+target/
+.git/
+.github/
+.gitignore
+.gitattributes
+.rustfmt.toml
+README.md
+Dockerfile
+.dockerignore
+*.md

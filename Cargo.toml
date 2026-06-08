@@ -1,0 +1,13 @@
+[package]
+name = "netimitor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-web = "4.13.0"
+clap = { version = "4.6.1", features = ["derive"] }
+env_logger = "0.11"
+log = "0.4.32"
+tokio = { version = "1.52.3", features = ["full"] }
+wreq = "5.3.0"
+wreq-util = "2.2.6"
