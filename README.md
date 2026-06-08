@@ -1,4 +1,4 @@
-# NetImitor (Network Imitator)
+# NetImitor (Network Impersonator)
 
 A forward HTTP proxy with browser emulation, built with [actix-web](https://actix.rs/) and [wreq](https://crates.io/crates/wreq).
 
