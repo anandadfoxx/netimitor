@@ -6,13 +6,13 @@ A forward HTTP proxy with browser emulation, built with [actix-web](https://acti
 
 ```bash
 # Start the proxy
-cargo run
+./netimitor
 
 # With custom address and emulation profile
-cargo run -- --address 0.0.0.0:8080 --emulation chrome_137
+./netimitor --address 0.0.0.0:8080 --emulation chrome_137
 
 # View available options
-cargo run -- --help
+./netimitor --help
 ```
 
 ```
