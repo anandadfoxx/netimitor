@@ -38,4 +38,13 @@ impl ProxyClient {
     }
     req.send().await
   }
+
+  pub async fn websocket(&self, url: &str) -> Result<wreq::WebSocket, Error> {
+    self.client
+      .websocket(url)
+      .send()
+      .await?
+      .into_websocket()
+      .await
+  }
 }
