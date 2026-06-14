@@ -1,6 +1,25 @@
 use actix_web::{HttpRequest, HttpResponse, web};
 use futures_util::{SinkExt, StreamExt};
 
+fn extract_target_url(path: &str) -> Option<String> {
+  let url = path.strip_prefix('/')?;
+  if url.starts_with("http://") || url.starts_with("https://")
+    || url.starts_with("ws://") || url.starts_with("wss://")
+  {
+    Some(url.to_owned())
+  } else if let Some(rest) = url.strip_prefix("http:/") {
+    Some(format!("http://{rest}"))
+  } else if let Some(rest) = url.strip_prefix("https:/") {
+    Some(format!("https://{rest}"))
+  } else if let Some(rest) = url.strip_prefix("ws:/") {
+    Some(format!("ws://{rest}"))
+  } else if let Some(rest) = url.strip_prefix("wss:/") {
+    Some(format!("wss://{rest}"))
+  } else {
+    None
+  }
+}
+
 async fn health_check() -> HttpResponse {
   HttpResponse::Ok().body("netimitor healthz ok")
 }
@@ -66,8 +85,8 @@ async fn handle_websocket_upgrade(
   client: &crate::client::ProxyClient,
 ) -> HttpResponse {
   let path = req.uri().to_string();
-  let target_url = match path.strip_prefix('/') {
-    Some(url) if url.starts_with("ws://") || url.starts_with("wss://") => url.to_string(),
+  let target_url = match extract_target_url(&path) {
+    Some(url) if url.starts_with("ws://") || url.starts_with("wss://") => url,
     _ => {
       return HttpResponse::BadRequest()
         .body("send a request like: /ws://target or /wss://target");
@@ -141,8 +160,8 @@ async fn proxy_handler(
   }
 
   let path = req.uri().to_string();
-  let target_url = match path.strip_prefix('/') {
-    Some(url) if url.starts_with("http://") || url.starts_with("https://") => url.to_string(),
+  let target_url = match extract_target_url(&path) {
+    Some(url) if url.starts_with("http://") || url.starts_with("https://") => url,
     _ => {
       return HttpResponse::BadRequest()
         .body("send a request like: /http://target or /https://target");
