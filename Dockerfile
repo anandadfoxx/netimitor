@@ -1,4 +1,4 @@
-FROM docker.io/rust:1.96-trixie AS builder
+FROM docker.io/rust:1.98-trixie AS builder
 
 RUN apt-get update && apt-get install -y \
     build-essential \
