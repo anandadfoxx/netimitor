@@ -12,11 +12,11 @@ pub async fn init() -> Result<(), Box<dyn std::error::Error>> {
   env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
   let config = NetimitorConfig::parse();
-  let emu = config.resolve_emulation();
-  let client = web::Data::new(ProxyClient::new(emu));
+  let profile = config.resolve_profile();
+  let client = web::Data::new(ProxyClient::new(profile));
 
   log::info!("welcome to netimitor");
-  log::info!("emulation profile: {:?}", emu);
+  log::info!("emulation profile: {:?}", profile);
   log::info!("starting proxy server...");
 
   HttpServer::new(move || {

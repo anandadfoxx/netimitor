@@ -1,5 +1,5 @@
 use wreq::{Client, Error, Method, Response, header::HeaderMap};
-use wreq_util::Emulation;
+use wreq_util::Profile;
 
 #[derive(Clone)]
 pub struct ProxyClient {
@@ -8,15 +8,15 @@ pub struct ProxyClient {
 
 impl Default for ProxyClient {
   fn default() -> Self {
-    ProxyClient::new(Emulation::Chrome137)
+    ProxyClient::new(Profile::Chrome137)
   }
 }
 
 impl ProxyClient {
-  pub fn new(emulation: Emulation) -> Self {
+  pub fn new(profile: Profile) -> Self {
     ProxyClient {
       client: Client::builder()
-        .emulation(emulation)
+        .emulation(profile)
         .build()
         .expect("unable to instantiate wreq client"),
     }
@@ -39,7 +39,7 @@ impl ProxyClient {
     req.send().await
   }
 
-  pub async fn websocket(&self, url: &str) -> Result<wreq::WebSocket, Error> {
+  pub async fn websocket(&self, url: &str) -> Result<wreq::ws::WebSocket, Error> {
     self.client
       .websocket(url)
       .send()

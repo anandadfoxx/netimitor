@@ -1,6 +1,6 @@
 [package]
 name = "netimitor"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
@@ -11,5 +11,5 @@ env_logger = "0.11"
 futures-util = "0.3"
 log = "0.4.32"
 tokio = { version = "1.52.3", features = ["full"] }
-wreq = { version = "5.3.0", features = ["websocket"] }
-wreq-util = "2.2.6"
+wreq = { version = "0.16.0", features = ["ws"] }
+wreq-util = "0.2.0"

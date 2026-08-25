@@ -18,21 +18,21 @@ fn is_websocket_upgrade_request(req: &HttpRequest) -> bool {
       .is_some_and(|v| v.to_lowercase().contains("upgrade"))
 }
 
-fn actix_to_wreq_message(msg: actix_ws::Message) -> Option<wreq::Message> {
+fn actix_to_wreq_message(msg: actix_ws::Message) -> Option<wreq::ws::message::Message> {
   match msg {
-    actix_ws::Message::Text(text) => Some(wreq::Message::text(text.to_string())),
-    actix_ws::Message::Binary(data) => Some(wreq::Message::Binary(data)),
-    actix_ws::Message::Ping(data) => Some(wreq::Message::Ping(data)),
-    actix_ws::Message::Pong(data) => Some(wreq::Message::Pong(data)),
+    actix_ws::Message::Text(text) => Some(wreq::ws::message::Message::text(text.to_string())),
+    actix_ws::Message::Binary(data) => Some(wreq::ws::message::Message::Binary(data)),
+    actix_ws::Message::Ping(data) => Some(wreq::ws::message::Message::Ping(data)),
+    actix_ws::Message::Pong(data) => Some(wreq::ws::message::Message::Pong(data)),
     actix_ws::Message::Close(reason) => {
       let frame = reason.map(|r| {
         let code_u16: u16 = r.code.into();
-        wreq::CloseFrame {
-          code: wreq::CloseCode(code_u16),
+        wreq::ws::message::CloseFrame {
+          code: wreq::ws::message::CloseCode::from(code_u16),
           reason: r.description.unwrap_or_default().into(),
         }
       });
-      Some(wreq::Message::Close(frame))
+      Some(wreq::ws::message::Message::Close(frame))
     }
     actix_ws::Message::Continuation(_) | actix_ws::Message::Nop => None,
   }
@@ -40,14 +40,14 @@ fn actix_to_wreq_message(msg: actix_ws::Message) -> Option<wreq::Message> {
 
 async fn try_forward_to_session(
   session: &mut actix_ws::Session,
-  msg: wreq::Message,
+  msg: wreq::ws::message::Message,
 ) -> Result<(), actix_ws::Closed> {
   match msg {
-    wreq::Message::Text(text) => session.text(text.to_string()).await,
-    wreq::Message::Binary(data) => session.binary(data).await,
-    wreq::Message::Ping(data) => session.ping(&data).await,
-    wreq::Message::Pong(data) => session.pong(&data).await,
-    wreq::Message::Close(frame) => {
+    wreq::ws::message::Message::Text(text) => session.text(text.to_string()).await,
+    wreq::ws::message::Message::Binary(data) => session.binary(data).await,
+    wreq::ws::message::Message::Ping(data) => session.ping(&data).await,
+    wreq::ws::message::Message::Pong(data) => session.pong(&data).await,
+    wreq::ws::message::Message::Close(frame) => {
       let reason = frame.map(|f| {
         let code_u16 = u16::from(f.code);
         actix_ws::CloseReason {
@@ -95,7 +95,7 @@ async fn handle_websocket_upgrade(
 async fn relay_websocket_messages(
   session: actix_ws::Session,
   msg_stream: actix_ws::MessageStream,
-  ws: wreq::WebSocket,
+  ws: wreq::ws::WebSocket,
 ) {
   let mut session = session;
   let mut msg_stream = msg_stream;
