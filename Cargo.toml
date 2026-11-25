@@ -11,5 +11,7 @@ env_logger = "0.11"
 futures-util = "0.3"
 log = "0.4.32"
 tokio = { version = "1.52.3", features = ["full"] }
-wreq = { version = "0.16.4", features = ["ws"] }
+wreq = { version = "0.16.5", features = ["ws"] }
 wreq-util = "0.2.1"
+
+
