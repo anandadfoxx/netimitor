@@ -2434,16 +2434,17 @@ dependencies = [
 
 [[package]]
 name = "wreq-util"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "833a5528fd9346f1f61a351104878be96024b5905f39774fc66909502da3acd5"
+checksum = "636ad931b75aa030cc320899507ce8d5e44f1d9b3b44a81d2e1a225b0d4aad3b"
 dependencies = [
- "brotli",
- "flate2",
- "typed-builder",
- "wreq",
- "zstd",
+  "brotli",
+  "flate2",
+  "typed-builder",
+  "wreq",
+  "zstd",
 ]
+
 
 [[package]]
 name = "writeable"
